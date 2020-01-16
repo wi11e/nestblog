@@ -1,0 +1,26 @@
+version: '3.4'
+services:
+  web:
+    image: eu.gcr.io/citypantry-159320/node:latest
+    working_dir: /srv
+    command: >
+      bash -c 'yarn install && yarn start:dev'
+    volumes:
+      - ./src:/srv/src
+      - ./test:/srv/test
+      - ./types:/srv/types
+      - ./migrations:/srv/migrations
+      - ./package.json:/srv/package.json
+      - ./yarn.lock:/srv/yarn.lock
+      - /srv/node_modules
+      - ./tsconfig.json:/srv/tsconfig.json
+      - ./tsconfig.build.json:/srv/tsconfig.build.json
+    ports:
+      - 3000:3000
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
